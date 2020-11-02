@@ -35,6 +35,34 @@ function onMessageHandler (target, context, msg, self) {
     const num = rollDice();
     client.say(target, `You rolled a ${num}`);
     console.log(`* Executed ${commandName} command`);
+  } else if (commandName === '!current') {
+    const https = require('https');
+    var data = "";
+    https.get('https://avnode.net/api/getcurrentprogram', (resp) => {
+      console.log(resp);
+    
+      // A chunk of data has been recieved.
+      resp.on('data', (chunk) => {
+        data += chunk;
+      });
+    
+      // The whole response has been received. Print out the result.
+      resp.on('end', () => {
+        console.log(JSON.parse(data));
+        var dat = JSON.parse(data);
+        var mess = "";
+        mess+="\nTitle: " + dat.data.video.title;
+        mess+="\nAuthor: " + dat.data.video.users[0].stagename;
+        mess+="\nURL: https://avnode.net/videos/" + dat.data.video.slug;
+        console.log("----------------------");
+        console.log(target);
+        client.say(target, mess);
+      });
+    
+    }).on("error", (err) => {
+      console.log("Error: " + err.message);
+    });
+    console.log(`* Executed ${commandName} command`);
   } else {
     console.log(`* Unknown command ${commandName}`);
   }

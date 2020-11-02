@@ -1,0 +1,25 @@
+{
+  "name": "vjtvbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "dependencies": {
+    "config": "^3.3.2",
+    "https": "^1.0.0",
+    "tmi.js": "^1.5.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gianlucadelgobbo/vjtvbot.git"
+  },
+  "author": "Gianluca Del Gobbo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gianlucadelgobbo/vjtvbot/issues"
+  },
+  "homepage": "https://github.com/gianlucadelgobbo/vjtvbot#readme"
+}
