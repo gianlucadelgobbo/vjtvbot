@@ -19,13 +19,22 @@ const client = new tmi.client(opts);
 // Register our event handlers (defined below)
 client.on('message', onMessageHandler);
 client.on('connected', onConnectedHandler);
+client.on('join', onJoinHandler);
 
 // Connect to Twitch:
 client.connect();
 
 // Called every time a message comes in
+function onJoinHandler (target, username, bho) {
+  var mess = "Hi "+username + " to know about the current video send the message \"!current\" in this chat";
+  //mess+="\nTitle: " + dat.data.video.title;
+  //mess+="\nAuthor: " + dat.data.video.users[0].stagename;
+  //mess+="\nURL: https://avnode.net/videos/" + dat.data.video.slug;
+  client.say(target, mess);
+}
+
 function onMessageHandler (target, context, msg, self) {
-  if (self) { return; } // Ignore messages from the bot
+    if (self) { return; } // Ignore messages from the bot
 
   // Remove whitespace from chat message
   const commandName = msg.trim();
