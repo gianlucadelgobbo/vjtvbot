@@ -30,7 +30,9 @@ function onJoinHandler (target, username, bho) {
   //mess+="\nTitle: " + dat.data.video.title;
   //mess+="\nAuthor: " + dat.data.video.users[0].stagename;
   //mess+="\nURL: https://avnode.net/videos/" + dat.data.video.slug;
-  client.say(target, mess);
+  console.log(username+" joined "+target);
+  var exlude = []
+  if (exlude.indexOf(username)===-1) client.say(target, mess);
 }
 
 function onMessageHandler (target, context, msg, self) {
@@ -40,15 +42,10 @@ function onMessageHandler (target, context, msg, self) {
   const commandName = msg.trim();
 
   // If the command is known, let's execute it
-  if (commandName === '!dice') {
-    const num = rollDice();
-    client.say(target, `You rolled a ${num}`);
-    console.log(`* Executed ${commandName} command`);
-  } else if (commandName === '!current') {
+  if (commandName === '!current') {
     const https = require('https');
     var data = "";
     https.get('https://avnode.net/api/getcurrentprogram', (resp) => {
-      console.log(resp);
     
       // A chunk of data has been recieved.
       resp.on('data', (chunk) => {
@@ -57,7 +54,6 @@ function onMessageHandler (target, context, msg, self) {
     
       // The whole response has been received. Print out the result.
       resp.on('end', () => {
-        console.log(JSON.parse(data));
         var dat = JSON.parse(data);
         var mess = "";
         mess+="\nTitle: " + dat.data.video.title;
@@ -76,11 +72,7 @@ function onMessageHandler (target, context, msg, self) {
     console.log(`* Unknown command ${commandName}`);
   }
 }
-// Function called when the "dice" command is issued
-function rollDice () {
-  const sides = 6;
-  return Math.floor(Math.random() * sides) + 1;
-}
+
 // Called every time the bot connects to Twitch chat
 function onConnectedHandler (addr, port) {
   console.log(`* Connected to ${addr}:${port}`);
