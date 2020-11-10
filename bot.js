@@ -1,28 +1,41 @@
 const tmi = require('tmi.js');
 const config = require('config');
+const valid = ["!love", "!risehands"];
 
-console.log(config);
 
-// Define configuration options
-const opts = {
-  identity: {
-    username: config.BOT_USERNAME,
-    password: config.OAUTH_TOKEN
-  },
-  channels: [
-    config.CHANNEL_NAME
-  ]
-};
-// Create a client with our options
-const client = new tmi.client(opts);
+// Create a Twitch client with our options
+const client = new tmi.client(config.opts);
 
-// Register our event handlers (defined below)
+// Register our Twitch event handlers (defined below)
 client.on('message', onMessageHandler);
 client.on('connected', onConnectedHandler);
 client.on('join', onJoinHandler);
 
 // Connect to Twitch:
 client.connect();
+
+// Called every time the bot connects to Twitch chat
+function onConnectedHandler (addr, port) {
+  console.log(`* Connected to ${addr}:${port}`);
+}
+
+/* var getIPAddresses = function () {
+    var os = require("os"),
+        interfaces = os.networkInterfaces(),
+        ipAddresses = [];
+
+    for (var deviceName in interfaces) {
+        var addresses = interfaces[deviceName];
+        for (var i = 0; i < addresses.length; i++) {
+            var addressInfo = addresses[i];
+            if (addressInfo.family === "IPv4" && !addressInfo.internal) {
+                ipAddresses.push(addressInfo.address);
+            }
+        }
+    }
+
+    return ipAddresses;
+}; */
 
 // Called every time a message comes in
 function onJoinHandler (target, username, bho) {
@@ -36,7 +49,7 @@ function onJoinHandler (target, username, bho) {
 }
 
 function onMessageHandler (target, context, msg, self) {
-    if (self) { return; } // Ignore messages from the bot
+  if (self) { return; } // Ignore messages from the bot
 
   // Remove whitespace from chat message
   const commandName = msg.trim();
